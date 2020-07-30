@@ -122,7 +122,7 @@ if [ -s ${atcffile} ] || [ -s ${adecktemp} ]; then
      'bdeckFile="'${bdeckfile}'"' \
      #'fcstHour=True'\
      #'catInfo=False' \
-     'catInfo=True'
+     'catInfo=True' \
      'modelLabels='${modelLabels} \
      'modelColors='${modelColors} \
      'modelMarkers='$modelMarkers \
