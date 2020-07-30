@@ -117,10 +117,12 @@ if [ -s ${atcffile} ] || [ -s ${adecktemp} ]; then
  ncl 'stormModel="'${MC_MODEL}'"' \
      'stormName="'${STORM}'"' 'stormID="'${STORMID}'"' \
      'startDate='${yyyymmddhh} \
- 	 'atcfFile="'${atcffile}'"' \
+     'atcfFile="'${atcffile}'"' \
      'adeckFile="'${adecktemp}'"' \
      'bdeckFile="'${bdeckfile}'"' \
-     'catInfo=True' \
+     #'fcstHour=True'\
+     #'catInfo=False' \
+     'catInfo=True'
      'modelLabels='${modelLabels} \
      'modelColors='${modelColors} \
      'modelMarkers='$modelMarkers \
@@ -136,7 +138,7 @@ if [ -s ${atcffile} ] || [ -s ${adecktemp} ]; then
  ncl 'stormModel="'${MC_MODEL}'"' \
      'stormName="'${STORM}'"' 'stormID="'${STORMID}'"' \
      'startDate='${yyyymmddhh} \
- 	 'atcfFile="'${atcffile}'"' \
+     'atcfFile="'${atcffile}'"' \
      'adeckFile="'${adecktemp}'"' \
      'bdeckFile="'${bdeckfile}'"' \
      'catInfo=True' \
