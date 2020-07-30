@@ -120,14 +120,13 @@ if [ -s ${atcffile} ] || [ -s ${adecktemp} ]; then
      'atcfFile="'${atcffile}'"' \
      'adeckFile="'${adecktemp}'"' \
      'bdeckFile="'${bdeckfile}'"' \
-     #'fcstHour=True'\
-     #'catInfo=False' \
      'catInfo=True' \
      'modelLabels='${modelLabels} \
      'modelColors='${modelColors} \
      'modelMarkers='$modelMarkers \
 	 plot_track.ncl
-
+    #'fcstHour=True'\
+     #'catInfo=False' \
  figpre=${STORM}${STORMID}.${yyyymmddhh}
  convert -trim ${figpre}.track.png ${figpre}.track.png
  convert -geometry x796 -bordercolor White -border 2x2 \
