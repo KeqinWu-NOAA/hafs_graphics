@@ -265,9 +265,9 @@ end do
       end if
 
       if (.not. isStormDomain) then
-         figName = graphicDir + "/" + stormName + stormID + "." + tostring(startDate) + "." +  modelName + ".reflectivity.f" + hour
-         if replace .or. ( .not. (fileexists( figName + "." + figType )) ) then
-            print(ifil)
+         figName = stormName + stormID + "." + tostring(startDate) + "." +  modelName + ".reflectivity.f" + hour
+         if replace .or. ( .not. (fileexists( graphicDir + "/" + figName + "." + figType )) ) then
+	    print(ifil)
             wks = gsn_open_wks(figType,  figName)
             figName = figName +  "." + figType
             hrind = NhlNewMarker(wks, "p", 37, 0.0, 0.0, 1.0, 1.0, 0.0)
