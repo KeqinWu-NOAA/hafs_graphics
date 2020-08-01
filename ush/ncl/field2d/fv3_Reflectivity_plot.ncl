@@ -320,7 +320,7 @@ end do
          end if
       else
          do i = 0, stormCount-1
-            figName = stormNames(i) + "." + tostring(startDate) + "." +  modelName +  ".storm.reflectivity.f" + hour
+            figName = "./" + stormNames(i) + "." + tostring(startDate) + "." +  modelName +  ".storm.reflectivity.f" + hour
             if .not. ismissing(track_xp(i,ifil)) .and. ( replace .or. ( .not. (fileexists( graphicDir + "/" + figName + "." + figType )) ) ) then
                print(ifil)
                wks = gsn_open_wks(figType,  figName)
