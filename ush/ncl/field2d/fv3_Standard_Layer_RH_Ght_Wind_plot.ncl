@@ -344,8 +344,8 @@ do ifil = startTimeLevel, endTimeLevel
    end if
 
    if (.not. isStormDomain) then
-      figName =  graphicDir + "/" + stormName + stormID + "." + tostring(startDate) + "." +  modelName + "." + tostring(standardLayer) + "mb.rh.hgt.wind.f" + hour
-      if replace .or. ( .not. (fileexists( figName + "." + figType )) ) then
+      figName = stormName + stormID + "." + tostring(startDate) + "." +  modelName + "." + tostring(standardLayer) + "mb.rh.hgt.wind.f" + hour
+      if replace .or. ( .not. (fileexists( graphicDir + "/" + figName + "." + figType )) ) then
         print(ifil)
         wks = gsn_open_wks(figType,  figName)
         figName = figName +  "." + figType
