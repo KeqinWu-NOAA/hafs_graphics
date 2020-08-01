@@ -461,8 +461,8 @@ maxLon  =  max(lon)        ;-50   ; max(lon)  ; -55
        end if
    else
        do i = 0, stormCount-1
-          figName = graphicDir + "/" + stormNames(i) + "." + tostring(startDate) + "." +  modelName + ".precip.mslp.thk.f" + hour
-          if .not. ismissing(track_xp(i,ifil)) .and. ( replace .or. ( .not. (fileexists( figName + "." + figType )) ) ) then
+          figName = stormNames(i) + "." + tostring(startDate) + "." +  modelName + ".precip.mslp.thk.f" + hour
+          if .not. ismissing(track_xp(i,ifil)) .and. ( replace .or. ( .not. (fileexists( graphicDir + "/" + figName + "." + figType )) ) ) then
              print(ifil)
              wks = gsn_open_wks(figType,  figName)
              figName = figName +  "." + figType
@@ -526,7 +526,6 @@ maxLon  =  max(lon)        ;-50   ; max(lon)  ; -55
 		     mres@gsMarkerColor = "white"
 		     pres@gsLineColor = "white"
 		     
-		     
 		     mres@gsMarkerColor = "Black"
 		     pres@gsLineColor = "black"
 		     line1(i) = gsn_add_polyline(wks,plot,track_xp(i,:),track_yp(i,:),pres)      ; draw the traj
@@ -564,3 +563,4 @@ print("end")
 
 end
 
+      
