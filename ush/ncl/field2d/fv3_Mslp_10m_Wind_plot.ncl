@@ -379,8 +379,8 @@ do ifil = startTimeLevel, endTimeLevel
    else 
    ;-------- draw storm structure plots for individual storms
    do i = 0, stormCount-1
-       figName =  graphicDir +  "/" + stormNames(i) + "." + tostring(startDate) + "." +  modelName + ".storm.mslp.10m_wind.f" + hour
-       if .not. ismissing(track_xp(i,ifil)) .and. ( replace .or. ( .not. (fileexists( figName + "." + figType ) ) ) ) then
+       figName =  stormNames(i) + "." + tostring(startDate) + "." +  modelName + ".storm.mslp.10m_wind.f" + hour
+       if .not. ismissing(track_xp(i,ifil)) .and. ( replace .or. ( .not. (fileexists( graphicDir +  "/" + figName + "." + figType ) ) ) ) then
           print(ifil)
           wks = gsn_open_wks(figType,  figName)
           figName = figName +  "." + figType
