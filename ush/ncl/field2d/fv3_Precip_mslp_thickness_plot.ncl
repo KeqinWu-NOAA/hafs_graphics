@@ -367,7 +367,7 @@ maxLon  =  max(lon)        ;-50   ; max(lon)  ; -55
    end if
 
    if (.not. isStormDomain) then
-      figName = stormName + stormID + "." + tostring(startDate) + "." +  modelName + ".precip.mslp.thk.f" + hour
+      figName = "./" + stormName + stormID + "." + tostring(startDate) + "." +  modelName + ".precip.mslp.thk.f" + hour
       if replace  .or. ( .not. (fileexists( graphicDir + "/" + figName + "." + figType )) ) then
          print(ifil)
          wks = gsn_open_wks(figType,  figName)
@@ -461,7 +461,7 @@ maxLon  =  max(lon)        ;-50   ; max(lon)  ; -55
        end if
    else
        do i = 0, stormCount-1
-          figName = stormNames(i) + "." + tostring(startDate) + "." +  modelName + ".precip.mslp.thk.f" + hour
+          figName = "./" + stormNames(i) + "." + tostring(startDate) + "." +  modelName + ".precip.mslp.thk.f" + hour
           if .not. ismissing(track_xp(i,ifil)) .and. ( replace .or. ( .not. (fileexists( graphicDir + "/" + figName + "." + figType )) ) ) then
              print(ifil)
              wks = gsn_open_wks(figType,  figName)
