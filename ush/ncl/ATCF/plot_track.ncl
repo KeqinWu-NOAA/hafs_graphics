@@ -1,6 +1,6 @@
 ; ***********************************************
 ; Usage Examples:
-; ncl 'stormModel="HAFS"' catInfo=False fcst=True 'stormName="gonzalo"' 'stormID="07l"' maxHour=168 startDate=2020072406 'adeckFile="aal072020.dat"' 'bdeckFile="bal072020.dat"' 'atcfFile="gonzalo07l.2020072406.trak.hafs.atcfunix.all"' plot_track.ncl 
+; ncl 'stormModel="HAFS"' catInfo=False fcstHour=True 'stormName="gonzalo"' 'stormID="07l"' maxHour=168 startDate=2020072406 'adeckFile="aal072020.dat"' 'bdeckFile="bal072020.dat"' 'atcfFile="gonzalo07l.2020072406.trak.hafs.atcfunix.all"' plot_track.ncl 
 
 ;************************************************
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl"
@@ -132,11 +132,13 @@ begin
   data1=new((/trackNum,track_pts/),float, default_fillvalue("float"))   ; clon
   data2=new((/trackNum,track_pts/),float, default_fillvalue("float"))   ; clat
   data3=new((/trackNum,track_pts/),float, default_fillvalue("float"))   ; Vmax
-  data4=new((/trackNum,track_pts/),float, default_fillvalue("float"))   ; Pmin
+  ;;data4=new((/trackNum,track_pts/),float, default_fillvalue("float"))   ; Pmin
+  data5=new((/trackNum,track_pts/),float, default_fillvalue("float"))   ; hour
   data1@_FillValue=default_fillvalue("float")
   data2@_FillValue=default_fillvalue("float")
   data3@_FillValue=default_fillvalue("float")
-  data4@_FillValue=default_fillvalue("float")
+  ;;data4@_FillValue=default_fillvalue("float")
+  data5@_FillValue=default_fillvalue("float")
   do i=0,trackNum-1
     if ( modelLabels(i) .eq. stormModel .and. fileexists(atcfFile) ) then
       print("Reading ATCF track")
@@ -144,18 +146,21 @@ begin
       data1(i,:)=track_data(0,:)
       data2(i,:)=track_data(1,:)
       data3(i,:)=track_data(2,:)
+      data5(i,:)=track_data(3,:)
     else if ( modelLabels(i) .eq. "BEST" .and. fileexists(bdeckFile) ) then
       print("Reading bdeck")
       best_data=getBDeck(bdeckFile, startDate, maxHour)
       data1(i,:)=best_data(0,:)
       data2(i,:)=best_data(1,:)
       data3(i,:)=best_data(2,:)
+      data5(i,:)=best_data(3,:)
     else if ( fileexists(adeckFile) ) then
       print("Reading "+modelLabels(i)+" in adeck")
       xyw=getADeck(adeckFile, modelLabels(i), startDate, maxHour)
       data1(i,:)=xyw(0,:)
       data2(i,:)=xyw(1,:)
       data3(i,:)=xyw(2,:)
+      data5(i,:)=xyw(3,:)
     end if
     end if
     end if
@@ -270,7 +275,7 @@ begin
 ; mres@gsMarkerColor="red"
  
    txres               = True
-   txres@txFontHeightF = 0.009            ; Set the font height
+   txres@txFontHeightF = 0.01            ; Set the font height
    ;txres@txFont = 22 ; helvetica bold
 
 ;************************************************
@@ -282,7 +287,7 @@ begin
   maxLatF=max(data2)
   minLonF=min(data1)
   minLatF=min(data2)
-  disLatF=(maxLatF-minLatF)*0.618
+  disLatF=(maxLatF-minLatF)*0.56
   meanLatF=(minLatF + maxLatF)/2.0
 
   ; special case on Longitude
@@ -296,10 +301,10 @@ begin
     if meanLonF .gt. 180 then
        meanLonF=meanLonF - 360
     end if
-    disLonF=(maxLonF-minLonF)*0.618
+    disLonF=(maxLonF-minLonF)*0.56
   else
     meanLonF=(minLonF + maxLonF)/2.0
-    disLonF=(maxLonF-minLonF)*0.618
+    disLonF=(maxLonF-minLonF)*0.56
   end if
 
   disLatF=max((/disLonF, disLatF, 10./))
@@ -408,21 +413,21 @@ begin
         end if
         markercats(i,k)=gsn_add_polymarker(wks,plot, data1(i,k), data2(i,k), mres)
       end if
-
       if (fcstHour) then
         ; Add forecast hours for tracks
         txres@txFontColor = modelColors(i)
-        if (.not. ismissing(data3(i,k))) .and. k%2 .eq. 0 then
-           if k*6 .lt. 10 then
+        hr=tointeger(data5(i,k))
+        if (.not. ismissing(data3(i,k))) .and. hr%24 .eq. 0 then
+           if hr .lt. 10 then
                dx=0.09
-           else if k*6 .lt. 100 then
+           else if hr .lt. 100 then
                dx=0.18
            else
                dx=0.27
            end if
            end if
                 
-           texts(i,k) = gsn_add_text(wks,plot, tostring(k*6), data1(i,k)+dx*(disLatF/50.0+1.1), data2(i,k)+1.5*(disLatF/50.0+0.2), txres)
+           texts(i,k) = gsn_add_text(wks,plot, tostring(hr), data1(i,k)+dx*(disLatF/50.0+1.1), data2(i,k)+1.5*(disLatF/50.0+0.2), txres)
         end if
       end if
 

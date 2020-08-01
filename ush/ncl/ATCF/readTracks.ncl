@@ -157,7 +157,6 @@ begin
         track_data(1,:)=track_yp
         track_data(2,:)=track_w
 ;    end if
-
     return(track_data)
 end
 
@@ -166,7 +165,7 @@ function getATCFTrack_6Hr( fileName, maxHour )
 ; ---- read in the data points (in 6 hour apart) for the input ATCF track file ---------
 begin
      track_pts = maxHour/3 + 1
-     track_data=new((/3,track_pts/), float, default_fillvalue("float"))
+     track_data=new((/4,track_pts/), float, default_fillvalue("float"))
      ;  if (isfile(fileName)) then
         track = asciiread(fileName, -1,"string") ;"/scratch3/NCEPDEV/hwrf/save/Keqin.Wu/data/harvey09l.2017082412_hmon/harvey09l.2017082412.trak.hmon.atcfunix",-1,"string")
         track_xp=new(track_pts, float, default_fillvalue("float"))
@@ -193,10 +192,10 @@ begin
               end if
 
               if index .lt. track_pts then
-                   track_xp(index)=x
-                   track_yp(index)=y
-                   track_w(index)=stringtofloat(words(8))
-                   track_hrs(index)=hr
+                   track_xp(count)=x
+                   track_yp(count)=y
+                   track_w(count)=stringtofloat(words(8))
+                   track_hrs(count)=hr
               end if
 
              count=count+1
@@ -206,6 +205,7 @@ begin
         track_data(0,:)=track_xp
         track_data(1,:)=track_yp
         track_data(2,:)=track_w
+        track_data(3,:)=track_hrs
 ;    end if
     return(track_data)
 end
@@ -271,7 +271,7 @@ function getADeck( fileName, type, startDate, maxHour)
 begin
 ; ---- take value for every 6 hr-------
   track_pts=maxHour/3 + 1
-  xy=new((/3,track_pts/), float, default_fillvalue("float"))
+  xy=new((/4,track_pts/), float, default_fillvalue("float"))
 
 ;  if (fileexists(fileName)) then
     data = asciiread(fileName,-1,"string")
@@ -279,8 +279,7 @@ begin
     xp=new(track_pts, float, default_fillvalue("float"))
     yp=new(track_pts, float, default_fillvalue("float"))
     maxw=new(track_pts, float, default_fillvalue("float"))
-
-    ;hrs=new(track_pts, integer, default_fillvalue("integer"))
+    hrs=new(track_pts, integer, default_fillvalue("integer"))
     if strlen(type) .lt. 4 then
         type = " " + type
     end if
@@ -314,7 +313,7 @@ begin
 
                        maxw(count)=stringtofloat(words(8))
 
-                       ;hrs(count)=hr0
+                       hrs(count)=hr0
                        count=count+1
                        hr1 = hr0
                    end if
@@ -327,6 +326,7 @@ begin
     xy(0,:)=xp(0:track_pts-1:1)
     xy(1,:)=yp(0:track_pts-1:1)
     xy(2,:)=maxw(0:track_pts-1:1)
+    xy(3,:)=hrs(0:track_pts-1:1)
 
 ;  end if
   return(xy)
@@ -339,7 +339,7 @@ begin
 ; for composite plot, give it a bigger than possible number, e.g. 600
 
 pnum = maxHour/3 + 1
-best = new((/3,pnum/), float, default_fillvalue("float"))
+best = new((/4,pnum/), float, default_fillvalue("float"))
 
 ;if (fileexists(fileName)) then
 
@@ -424,7 +424,7 @@ best = new((/3,pnum/), float, default_fillvalue("float"))
                 	best_xp(count)=w
 	                best_yp(count)=n
         	        best_w(count)=maxw
-
+        	        best_hrs(count)=doubletoint(hour-startHour)
                 	count=count+1
 	        end if
 	  end if
@@ -434,6 +434,7 @@ best = new((/3,pnum/), float, default_fillvalue("float"))
 	  best(0,:) = best_xp
 	  best(1,:) = best_yp
 	  best(2,:) = best_w
+	  best(3,:) = best_hrs
 ;end if
    return(best)
 
@@ -806,7 +807,7 @@ begin
                model=words(4)
                hr0 = stringtointeger(words(5))
                if model .eq. type then
-                   if (hr0 .ne. hr1) .and. (hr0 .le. 126) .and. (hr0%6 .eq. 0) then
+                   if (hr0 .ne. hr1) .and. (hr0 .le. maxHour) .and. (hr0%6 .eq. 0) then
                        index = hr0/3
                        maxw(count)=stringtofloat(words(8))
 
