@@ -265,7 +265,7 @@ end do
       end if
 
       if (.not. isStormDomain) then
-         figName = stormName + stormID + "." + tostring(startDate) + "." +  modelName + ".reflectivity.f" + hour
+         figName = "./" + stormName + stormID + "." + tostring(startDate) + "." +  modelName + ".reflectivity.f" + hour
          if replace .or. ( .not. (fileexists( graphicDir + "/" + figName + "." + figType )) ) then
 	    print(ifil)
             wks = gsn_open_wks(figType,  figName)
