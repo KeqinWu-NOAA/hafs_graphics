@@ -126,9 +126,9 @@ begin
   markerSizes(:)=markerSize
   markerThicknesses(:)=markerThickness
 
-  data1=new((/trackNum,track_pts/),float, default_fillvalue("float"))
-  data2=new((/trackNum,track_pts/),float, default_fillvalue("float"))
-  data3=new((/trackNum,track_pts/), integer, default_fillvalue("integer"))
+  data1=new((/trackNum,track_pts/),float, default_fillvalue("float")) ;vmax
+  data2=new((/trackNum,track_pts/),float, default_fillvalue("float"))  ;pmin
+  data3=new((/trackNum,track_pts/), integer, default_fillvalue("integer")) ;hours
   data1@_FillValue=default_fillvalue("float")
   data2@_FillValue=default_fillvalue("float")
   data3@_FillValue=default_fillvalue("integer")
